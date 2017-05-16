@@ -1,3 +1,43 @@
-<h1>
-  {{title}}
-</h1>
+<section class="todoapp">
+  <header class="header">
+    <h1>Todos</h1>
+    <form
+      action=""
+      id="todo-form"
+      (ngSubmit)="addTodo()">
+      <input
+        class="new-todo"
+        autocomplete="off"
+        placeholder="What needs to be done?"
+        name="todoText"
+        [(ngModel)]="todoText">
+    </form>
+  </header>
+  <section class="main">
+    <input
+      class="toggle-all"
+      type="checkbox"
+      #toggleall
+      [checked]="store.allCompleted()"
+      (click)="toggleAllTodos(toggleall.checked)">
+    <ul class="todo-list">
+      <li *ngFor="let item of storeItems; let num = index">
+        <div class="view">
+          <input class="toggle" (click)="toggleStatus(item)" type="checkbox" id="item-{{ num }}" [checked]="item.completed">
+          <label for="item-{{ num }}">{{ item.title }}</label>
+          <button class="destroy" (click)="remove(item)"></button>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <footer id="footer" *ngIf="store.todoItems.length > 0" class="">
+    <span class="todo-count"><strong>{{ store.getRemaining().length }}</strong>
+      <span>{{store.getRemaining().length === 1 ? 'item' : 'items'}} left</span>
+    </span>
+    <ul class="filters">
+      <li *ngFor="let filter of filters;">
+        <a href="#" (click)="todosFilter(filter)" [class.selected]="filter.selected">{{filter.type}}</a>
+      </li>
+    </ul>
+  </footer>
+</section>
